@@ -1,0 +1,47 @@
+<definitions name="PaymentService"
+   targetNamespace="urn:PaymentService"
+   xmlns="http://schemas.xmlsoap.org/wsdl/"
+   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+   xmlns:tns="urn:PaymentService"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+ 
+   <message name="CardDetails">
+      <part name="CardNumber" type="xsd:string"/>
+      <part name="Expiry" type="xsd:string"/>
+      <part name="CardHolderName" type="xsd:string"/>
+   </message>
+
+   <message name="PaymentResponse">
+      <part name="result" type="xsd:boolean"/>
+   </message>
+
+   <portType name="PaymentPortType">
+      <operation name="InitiatePayment">
+		<input message="tns:CardDetails"/>
+		<output message="tns:PaymentResponse"/>
+      </operation>
+   </portType>
+
+   <binding name="PaymentBinding" type="tns:PaymentPortType">
+      <soap:binding style="rpc"
+        transport="http://schemas.xmlsoap.org/soap/http"/>
+      <operation name="InitiatePayment">
+		<soap:operation soapAction=""/>
+		<soap:operation soapAction="urn:PaymentService#InitiatePayment"/>
+            <input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PaymentService"/>
+            </input>
+            <output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:PaymentService"/>
+            </output>
+      </operation>
+   </binding>
+
+   <service name="PaymentService">
+      <documentation>WSDL File for PaymentService</documentation>
+      <port binding="tns:PaymentBinding" name="PaymentPort">
+         <soap:address
+            location="http://localhost:8000/paymentservice" />
+      </port>
+   </service>
+</definitions>
